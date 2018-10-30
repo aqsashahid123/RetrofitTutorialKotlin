@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
       //  binding.rvBreeds
 
-//
+//https://medium.com/@soutoss/arquiteturas-em-android-mvvm-kotlin-retrofit-parte-1-2ac77c8a26
 //        binding.rvBreeds.adapter = BreedsAdapter(emptyList())
 //        binding.rvBreeds.layoutManager = LinearLayoutManager(activity)
 //        return binding.root

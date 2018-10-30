@@ -4,7 +4,11 @@ import android.databinding.DataBindingUtil
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.renderscript.ScriptGroup
+import android.support.v7.widget.LinearLayoutManager
 import cod.a1byte.retrofittutorialkotlin.databinding.ActivityMainBinding
+import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
     lateinit var viewModel: BreedsViewModel
@@ -13,13 +17,18 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val binding : ActivityMainBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         binding.viewModel = viewModel
-        //binding.rvBreeds.
+     //   rvBreeds.adapter =
+//       binding.rvBreeds.adapter
+        createViewModel()
+        binding.viewModel = viewModel
+        binding.rvBreeds.adapter = BreedsAdapter(emptyList())
+        binding.rvBreeds.layoutManager = LinearLayoutManager(this)
 
-      //  binding.rvBreeds
-
-//https://medium.com/@soutoss/arquiteturas-em-android-mvvm-kotlin-retrofit-parte-1-2ac77c8a26
-//        binding.rvBreeds.adapter = BreedsAdapter(emptyList())
-//        binding.rvBreeds.layoutManager = LinearLayoutManager(activity)
-//        return binding.root
+    }
+    fun createViewModel(): BreedsViewModel {
+        val retrofit = Retrofit.Builder().baseUrl("http://dog.ceo/api/").addConverterFactory(GsonConverterFactory.create()).build()
+        val dogCeoDataSource = DogCeoDataSource(retrofit.create(DogCeoApi::class.java))
+        val repository = BreedRepository(dogCeoDataSource)
+        return BreedsViewModel(repository, applicationContext)
     }
 }
